@@ -36,7 +36,7 @@ exports.login = async (req, res) => {
         // ✅ SET JWT IN COOKIE
         res.cookie("accessToken", token, {
             httpOnly: true,              // VERY IMPORTANT
-            secure: process.env.NODE_ENV === "production",
+            secure: true,
             sameSite: "lax",
             maxAge: 24 * 60 * 60 * 1000, // 1 day
             path: "/",
@@ -55,8 +55,8 @@ exports.login = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Login Error:", error);
-        return res.status(500).json({ message: "Login failed" });
+        console.error("Login error:", error); // 🔥 Log the error
+        res.status(500).json({ message: "Internal server error" });
     }
 };
 
