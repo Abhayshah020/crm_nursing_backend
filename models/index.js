@@ -3,7 +3,9 @@ const sequelize = require("../config/database");
 const CarePlan = require("./CarePlan");
 const CarePlanChronicDisease = require("./CarePlanChronicDisease");
 const CarePlanPartnershipRole = require("./CarePlanPartnershipRole");
-const DailyNote = require("./dailyNote");
+const DailyNote = require("./DailyNote");
+const User = require("./User");
+
 /**
  * Associations
  */
@@ -32,5 +34,6 @@ module.exports = {
     CarePlan,
     CarePlanChronicDisease,
     CarePlanPartnershipRole,
-    DailyNote
+    DailyNote,
+    User,
 };

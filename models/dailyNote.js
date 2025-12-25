@@ -6,8 +6,8 @@ const DailyNote = sequelize.define("DailyNote", {
         type: DataTypes.STRING,
         allowNull: false
     },
-    date: {
-        type: DataTypes.DATEONLY,
+    timeStamps: {
+        type: DataTypes.STRING,
         allowNull: false
     },
     notes: {
@@ -17,7 +17,7 @@ const DailyNote = sequelize.define("DailyNote", {
     createdBy: {
         type: DataTypes.INTEGER
     },
-    status: { // draft or completed
+    status: {
         type: DataTypes.ENUM("draft", "completed"),
         defaultValue: "draft"
     }

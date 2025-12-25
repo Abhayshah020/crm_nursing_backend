@@ -1,9 +1,9 @@
 const WINDOW_MS = 10 * 1000; // 10 seconds
-const MAX_REQUESTS = 3;
+const MAX_REQUESTS = 20;
 
 const ipStore = new Map();
 
-export default function rateLimiter(req, res, next) {
+export function rateLimiter(req, res, next) {
     const ip = req.ip;
     const now = Date.now();
 

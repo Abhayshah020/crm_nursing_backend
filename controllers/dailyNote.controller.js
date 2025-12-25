@@ -8,8 +8,8 @@ const {
  */
 exports.createDailyNote = async (req, res) => {
     try {
-        const { clientName, date, notes, status = "draft", createdBy } = req.body;
-        const note = await DailyNote.create({ clientName, date, notes, status, createdBy });
+        const { clientName, timeStamps, notes, status = "draft", createdBy } = req.body;
+        const note = await DailyNote.create({ clientName, timeStamps, notes, status, createdBy });
         res.status(201).json(note);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -21,7 +21,7 @@ exports.createDailyNote = async (req, res) => {
  */
 exports.getAllDailyNotes = async (req, res) => {
     try {
-        const notes = await DailyNote.findAll({ order: [["date", "DESC"]] });
+        const notes = await DailyNote.findAll({ order: [["timeStamps", "DESC"]] });
         res.json(notes);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -48,12 +48,12 @@ exports.getDailyNoteById = async (req, res) => {
 exports.updateDailyNote = async (req, res) => {
     try {
         const { id } = req.params;
-        const { clientName, date, notes, status } = req.body;
+        const { clientName, timeStamps, notes, status } = req.body;
 
         const note = await DailyNote.findByPk(id);
         if (!note) return res.status(404).json({ error: "Daily Note not found" });
 
-        await note.update({ clientName, date, notes, status });
+        await note.update({ clientName, timeStamps, notes, status });
         res.json(note);
     } catch (err) {
         res.status(500).json({ error: err.message });
