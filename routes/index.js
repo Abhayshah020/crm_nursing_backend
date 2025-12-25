@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 app.use(cors({
     origin: [
-        "https://crmnursing.smsitsolutions.com.au/",
+        "https://crmnursing.smsitsolutions.com.au",
     ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
