@@ -18,14 +18,13 @@ const UrineMonitoring = require("./UrineMonitoring");
  * Associations
  */
 CarePlan.hasMany(CarePlanChronicDisease, {
-    foreignKey: "carePlanId",
-    as: "chronicDiseases",
-    onDelete: "CASCADE"
+  foreignKey: "carePlanId",
 });
 
 CarePlanChronicDisease.belongsTo(CarePlan, {
-    foreignKey: "carePlanId"
+  foreignKey: "carePlanId",
 });
+
 
 CarePlan.hasMany(CarePlanPartnershipRole, {
     foreignKey: "carePlanId",

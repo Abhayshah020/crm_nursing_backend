@@ -5,13 +5,13 @@ const CarePlanPartnershipRole = sequelize.define(
     "CarePlanPartnershipRole",
     {
         id: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4,
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
             primaryKey: true
         },
 
         carePlanId: {
-            type: DataTypes.UUID,
+            type: DataTypes.INTEGER,
         },
 
         name: {
