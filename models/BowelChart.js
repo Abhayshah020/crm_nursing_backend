@@ -23,6 +23,11 @@ const BowelChart = sequelize.define(
         bowelMotion: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
+        },  
+
+        bristolAmount: {
+            type: DataTypes.ENUM("Small", "Medium", "Large"),
+            defaultValue: "Small",
         },
         bristolType: {
             type: DataTypes.ENUM("Separate hard lumps (severe constipation)", "Sausage-shaped but lumpy", "Sausage with cracks on surface", "Smooth, soft sausage or snake (normal)", "Soft blobs with clear edges", "Mushy stool, fluffy pieces", "Watery, no solid pieces (diarrhoea)"),

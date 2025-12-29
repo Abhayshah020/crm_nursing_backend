@@ -14,8 +14,8 @@ const DailyNote = sequelize.define("DailyNote", {
         type: DataTypes.TEXT,
         allowNull: false
     },
-    createdBy: {
-        type: DataTypes.INTEGER
+    date: {
+        type: DataTypes.STRING,
     },
     status: {
         type: DataTypes.ENUM("draft", "completed"),

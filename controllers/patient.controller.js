@@ -1,6 +1,8 @@
 const Patient = require("../models/Patient");
+const fs = require("fs");
+const path = require("path");
 
-// Create a patient
+// Create patient
 exports.createPatient = async (req, res) => {
     try {
         const { name, contact, email, age, address, details } = req.body;
@@ -9,8 +11,18 @@ exports.createPatient = async (req, res) => {
             return res.status(400).json({ message: "Name is required" });
         }
 
+        const imagePath = req.file
+            ? `/uploads/patients/${req.file.filename}`
+            : null;
+
         const patient = await Patient.create({
-            name, contact, email, age, address, details,
+            name,
+            contact,
+            email,
+            age,
+            address,
+            details,
+            image: imagePath,
         });
 
         res.status(201).json({ message: "Patient created", patient });
@@ -34,8 +46,7 @@ exports.getPatients = async (req, res) => {
 // Get single patient
 exports.getPatientById = async (req, res) => {
     try {
-        const { id } = req.params;
-        const patient = await Patient.findByPk(id);
+        const patient = await Patient.findByPk(req.params.id);
 
         if (!patient) {
             return res.status(404).json({ message: "Patient not found" });
@@ -59,7 +70,31 @@ exports.updatePatient = async (req, res) => {
             return res.status(404).json({ message: "Patient not found" });
         }
 
-        await patient.update({ name, contact, email, age, address, details });
+        // If new image uploaded → delete old image
+        if (req.file && patient.image) {
+            const oldPath = path.join(
+                __dirname,
+                "..",
+                patient.image
+            );
+            if (fs.existsSync(oldPath)) {
+                fs.unlinkSync(oldPath);
+            }
+        }
+
+        const imagePath = req.file
+            ? `/uploads/patients/${req.file.filename}`
+            : patient.image;
+
+        await patient.update({
+            name,
+            contact,
+            email,
+            age,
+            address,
+            details,
+            image: imagePath,
+        });
 
         res.json({ message: "Patient updated", patient });
     } catch (error) {
@@ -71,15 +106,20 @@ exports.updatePatient = async (req, res) => {
 // Delete patient
 exports.deletePatient = async (req, res) => {
     try {
-        const { id } = req.params;
-
-        const patient = await Patient.findByPk(id);
+        const patient = await Patient.findByPk(req.params.id);
         if (!patient) {
             return res.status(404).json({ message: "Patient not found" });
         }
 
-        await patient.destroy();
+        // Delete image from storage
+        if (patient.image) {
+            const imgPath = path.join(__dirname, "..", patient.image);
+            if (fs.existsSync(imgPath)) {
+                fs.unlinkSync(imgPath);
+            }
+        }
 
+        await patient.destroy();
         res.json({ message: "Patient deleted" });
     } catch (error) {
         console.error("Delete Patient Error:", error);

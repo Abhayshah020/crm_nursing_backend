@@ -3,6 +3,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 
 const carePlanRoutes = require("./carePlan.routes");
 const dailyNoteRoutes = require("./dailyNote.routes");
@@ -25,17 +26,26 @@ app.use(helmet());
 app.use(morgan("dev"));
 
 app.use(cookieParser());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+  })
+);
 
 app.use(cors({
-    origin: [
-        "https://crmnursing.smsitsolutions.com.au",
-    ],
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
+  origin: [
+    "http://localhost:3001",
+    "https://crmnursing.smsitsolutions.com.au",
+  ],
+  credentials: true,
 }));
 
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+
+
 app.use(express.json());
+
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 app.use("/api/authentication", userAuthentication);
 

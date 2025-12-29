@@ -1,46 +1,55 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-const Patient = sequelize.define("Patient", {
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-    },
+const Patient = sequelize.define(
+    "Patient",
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true,
+        },
 
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
 
-    contact: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
+        contact: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
 
-    email: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        unique: true,
-    },
+        email: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            unique: true,
+        },
 
-    age: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-    },
+        age: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        },
 
-    address: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-    },
+        address: {
+            type: DataTypes.TEXT,
+            allowNull: true,
+        },
 
-    details: {
-        type: DataTypes.JSONB,
-        defaultValue: {},
+        image: {
+            type: DataTypes.STRING, // stores image path
+            allowNull: true,
+        },
+
+        details: {
+            type: DataTypes.JSONB,
+            defaultValue: {},
+        },
     },
-}, {
-    tableName: "patients",
-    timestamps: true,
-});
+    {
+        tableName: "patients",
+        timestamps: true,
+    }
+);
 
 module.exports = Patient;
