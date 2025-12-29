@@ -12,12 +12,10 @@ const CarePlanChronicDisease = sequelize.define(
 
         carePlanId: {
             type: DataTypes.UUID,
-            allowNull: false
         },
 
         diseaseName: {
             type: DataTypes.STRING,
-            allowNull: false
         },
 
         careNeeds: {

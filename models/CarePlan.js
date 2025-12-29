@@ -5,19 +5,17 @@ const CarePlan = sequelize.define(
   "CarePlan",
   {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true
     },
 
     clientName: {
       type: DataTypes.STRING,
-      allowNull: false
     },
 
     dateOfBirth: {
       type: DataTypes.DATEONLY,
-      allowNull: false
     },
 
     medicalDoctorName: {
@@ -30,7 +28,6 @@ const CarePlan = sequelize.define(
 
     createdBy: {
       type: DataTypes.INTEGER,
-      allowNull: false
     },
 
     status: {
@@ -40,7 +37,6 @@ const CarePlan = sequelize.define(
 
     formData: {
       type: DataTypes.JSONB,
-      allowNull: false,
       defaultValue: {}
     }
   },

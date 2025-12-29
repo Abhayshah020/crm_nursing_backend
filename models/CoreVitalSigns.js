@@ -10,11 +10,9 @@ const CoreVitalSigns = sequelize.define("CoreVitalSigns", {
 
     patientId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
     },
     patientName: {
         type: DataTypes.STRING,
-        allowNull: false,
     },
 
     temperature: {
@@ -80,11 +78,9 @@ const CoreVitalSigns = sequelize.define("CoreVitalSigns", {
 
     staffId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
     },
     staffName: {
         type: DataTypes.STRING,
-        allowNull: false,
     },
 
 }, {

@@ -4,15 +4,12 @@ const sequelize = require("../config/database");
 const DailyNote = sequelize.define("DailyNote", {
     clientName: {
         type: DataTypes.STRING,
-        allowNull: false
     },
     timeStamps: {
         type: DataTypes.STRING,
-        allowNull: false
     },
     notes: {
         type: DataTypes.TEXT,
-        allowNull: false
     },
     date: {
         type: DataTypes.STRING,

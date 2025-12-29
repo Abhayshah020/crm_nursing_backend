@@ -12,12 +12,10 @@ const UrineMonitoring = sequelize.define(
 
         patientId: {
             type: DataTypes.INTEGER,
-            allowNull: false,
         },
 
         patientName: {
             type: DataTypes.STRING,
-            allowNull: false,
         },
 
         // Bladder Monitoring Period
@@ -126,18 +124,15 @@ const UrineMonitoring = sequelize.define(
 
         staffName: {
             type: DataTypes.STRING,
-            allowNull: false,
         },
 
         timestamp: {
             type: DataTypes.DATE,
-            allowNull: false,
             defaultValue: DataTypes.NOW,
         },
 
         formData: {
             type: DataTypes.JSONB,
-            allowNull: false,
             defaultValue: {},
         },
     },

@@ -12,17 +12,14 @@ const PainComfortAssessment = sequelize.define(
 
         patientId: {
             type: DataTypes.INTEGER,
-            allowNull: false,
         },
 
         patientName: {
             type: DataTypes.STRING,
-            allowNull: false,
         },
 
         painScore: {
             type: DataTypes.INTEGER,
-            allowNull: false,
             validate: {
                 min: 0,
                 max: 10,
@@ -31,7 +28,6 @@ const PainComfortAssessment = sequelize.define(
 
         painLocation: {
             type: DataTypes.STRING,
-            allowNull: false,
         },
 
         painDescription: {
@@ -41,12 +37,10 @@ const PainComfortAssessment = sequelize.define(
                 "Burning",
                 "Constant"
             ),
-            allowNull: false,
         },
 
         painManagementRequired: {
             type: DataTypes.BOOLEAN,
-            allowNull: false,
             defaultValue: false,
         },
 
@@ -67,12 +61,10 @@ const PainComfortAssessment = sequelize.define(
 
         staffId: {
             type: DataTypes.INTEGER,
-            allowNull: false,
         },
 
         staffName: {
             type: DataTypes.STRING,
-            allowNull: false,
         },
     },
     {

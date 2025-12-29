@@ -12,12 +12,10 @@ const NeuroGeneralObservation = sequelize.define(
 
         patientId: {
             type: DataTypes.INTEGER,
-            allowNull: false,
         },
 
         patientName: {
             type: DataTypes.STRING,
-            allowNull: false,
         },
 
         levelOfConsciousness: {
@@ -47,18 +45,15 @@ const NeuroGeneralObservation = sequelize.define(
 
         staffName: {
             type: DataTypes.STRING,
-            allowNull: false,
         },
 
         timestamp: {
             type: DataTypes.DATE,
-            allowNull: false,
             defaultValue: DataTypes.NOW,
         },
 
         formData: {
             type: DataTypes.JSONB,
-            allowNull: false,
             defaultValue: {},
         },
     },

@@ -12,7 +12,6 @@ const Patient = sequelize.define(
 
         name: {
             type: DataTypes.STRING,
-            allowNull: false,
         },
 
         contact: {
