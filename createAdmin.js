@@ -9,7 +9,7 @@ const User = require('./models/User');
 
         const admin = await User.create({
             name: 'Admin User',           // Change this
-            email: 'admin@smsitsolutions.com',   // Change this
+            email: 'admin@hdcs.com.au',   // Change this
             password: 'Admin@12345',        // Will be hashed automatically
             role: 'admin',
             status: 'active',
