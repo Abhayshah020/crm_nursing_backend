@@ -19,9 +19,8 @@ const FoodFluidIntake = sequelize.define(
     },
 
     inputFluidsMl: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: true,
-      comment: "Fluid intake in milliliters"
     },
 
     foodDescription: {
@@ -30,7 +29,7 @@ const FoodFluidIntake = sequelize.define(
     },
 
     totalFluid: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: true
     },
 

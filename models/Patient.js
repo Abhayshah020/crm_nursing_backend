@@ -22,11 +22,10 @@ const Patient = sequelize.define(
         email: {
             type: DataTypes.STRING,
             allowNull: true,
-            unique: true,
         },
 
         age: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: true,
         },
 
