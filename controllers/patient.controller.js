@@ -1,6 +1,8 @@
-const Patient = require("../models/Patient");
+const { Patient } = require("../models");
+
 const fs = require("fs");
 const path = require("path");
+const { signImage } = require("../utils/signImage");
 
 // Create patient
 exports.createPatient = async (req, res) => {
@@ -33,10 +35,42 @@ exports.createPatient = async (req, res) => {
 };
 
 // Get all patients
+
 exports.getPatients = async (req, res) => {
     try {
-        const patients = await Patient.findAll();
-        res.json(patients);
+        const { page = 1, limit = 10, patientId } = req.query;
+        const offset = (page - 1) * limit;
+
+        const whereClause = {};
+        if (patientId) {
+            whereClause.id = patientId;
+        }
+
+        const records = await Patient.findAndCountAll({
+            where: whereClause,
+            limit: parseInt(limit),
+            offset: parseInt(offset),
+            order: [["createdAt", "DESC"]],
+        });
+
+        // 🔐 Secure image mapping
+        const data = records.rows.map((patient) => {
+            const plain = patient.toJSON();
+
+            return {
+                ...plain,
+                image: plain.image
+                    ? `/uploads/signed/${signImage(plain.image, req.user.id)}`
+                    : null,
+            };
+        });
+
+        return res.status(200).json({
+            total: records.count,
+            page: parseInt(page),
+            pageSize: parseInt(limit),
+            data,
+        });
     } catch (error) {
         console.error("Get Patients Error:", error);
         res.status(500).json({ message: "Failed to fetch patients" });
@@ -52,7 +86,18 @@ exports.getPatientById = async (req, res) => {
             return res.status(404).json({ message: "Patient not found" });
         }
 
-        res.json(patient);
+        const plain = patient.toJSON();
+        const data = {
+            ...plain,
+            image: plain.image
+                ? `/uploads/signed/${signImage(plain.image, req.user.id)}`
+                : null,
+        };
+
+        return res.status(200).json({
+            data,
+        });
+
     } catch (error) {
         console.error("Get Patient Error:", error);
         res.status(500).json({ message: "Failed to fetch patient" });
@@ -126,3 +171,50 @@ exports.deletePatient = async (req, res) => {
         res.status(500).json({ message: "Failed to delete patient" });
     }
 };
+
+exports.getAllPatientsWithProfileStatus = async (req, res) => {
+    try {
+        const { page = 1, limit = 10, patientId } = req.query;
+        const offset = (page - 1) * limit;
+
+        const whereClause = {};
+        if (patientId) {
+            whereClause.id = patientId;
+        }
+        const records = await Patient.findAndCountAll({
+            where: whereClause,
+            limit: parseInt(limit),
+            offset: parseInt(offset),
+            order: [["createdAt", "DESC"]],
+        });
+
+        const data = records.rows.map((patient) => {
+            const plain = patient.toJSON();
+            return {
+                ...plain,
+                image: plain.image
+                    ? `/uploads/signed/${signImage(plain.image, req.user.id)}`
+                    : null,
+            };
+        });
+
+
+        return res.status(200).json({
+            total: records.count,
+            page: parseInt(page),
+            pageSize: parseInt(limit),
+            data,
+        });
+
+    } catch (error) {
+        console.error("Get All Patients With Profile Status Error:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        });
+    }
+};
+
+
+
+

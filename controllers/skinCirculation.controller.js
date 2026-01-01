@@ -17,20 +17,25 @@ exports.createSkinCirculation = async (req, res) => {
 // GET all records (with optional pagination)
 exports.getAllSkinCirculations = async (req, res) => {
     try {
-        const { page = 1, limit = 10 } = req.query;
+        const { page = 1, limit = 10, patientId } = req.query;
         const offset = (page - 1) * limit;
+        const whereClause = {};
+        if (patientId) {
+            whereClause.patientId = patientId;
+        }
 
         const records = await SkinCirculation.findAndCountAll({
+            where: whereClause,
             limit: parseInt(limit),
             offset: parseInt(offset),
             order: [["timestamp", "DESC"]],
         });
 
         return res.status(200).json({
-            data: records.rows,
             total: records.count,
             page: parseInt(page),
-            pages: Math.ceil(records.count / limit),
+            pageSize: parseInt(limit),
+            data: records.rows,
         });
     } catch (error) {
         console.error("Get SkinCirculations Error:", error);

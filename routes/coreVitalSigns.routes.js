@@ -1,7 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const coreVitalSignsController = require("../controllers/coreVitalSigns.controller");
+const auth = require('../middlewares/auth.middleware');
+const { rateLimiter } = require('../middlewares/rateLimiter');
 
+router.use(rateLimiter);
+router.use(auth);
 // Create a new record
 router.post("/", coreVitalSignsController.createVitalSign);
 

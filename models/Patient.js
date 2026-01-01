@@ -48,6 +48,7 @@ const Patient = sequelize.define(
     {
         tableName: "patients",
         timestamps: true,
+        freezeTableName: true,
     }
 );
 

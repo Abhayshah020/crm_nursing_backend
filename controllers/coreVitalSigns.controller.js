@@ -17,10 +17,32 @@ exports.createVitalSign = async (req, res) => {
 // GET all Core Vital Signs (optionally by patient)
 exports.getAllVitalSigns = async (req, res) => {
     try {
-        const { patientName } = req.query;
-        const where = patientName ? { patientName } : {};
-        const records = await CoreVitalSigns.findAll({ where });
-        return res.json(records);
+        const { page = 1, limit = 20, patientName, patientId } = req.query;
+        const offset = (page - 1) * limit;
+
+        const whereClause = {};
+
+        if (patientId) {
+            whereClause.patientId = patientId;
+        }
+        if (patientName) {
+            whereClause.patientName = patientName;
+        }
+
+        const records = await CoreVitalSigns.findAndCountAll({
+            whereClause,
+            limit: parseInt(limit, 10),
+            offset: parseInt(offset, 10),
+            order: [["timestamp", "DESC"]],
+        });
+
+        return res.status(200).json({
+            total: records.count,
+            page: parseInt(page),
+            pageSize: parseInt(limit),
+            data: records.rows,
+        });
+
     } catch (error) {
         console.error("Get All Vital Signs Error:", error);
         return res.status(500).json({ message: "Internal server error" });

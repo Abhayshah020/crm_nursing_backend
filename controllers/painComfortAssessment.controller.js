@@ -24,13 +24,26 @@ exports.createPainAssessment = async (req, res) => {
  */
 exports.getAllPainAssessments = async (req, res) => {
     try {
-        const data = await PainComfortAssessment.findAll({
+        const { page = 1, limit = 10, patientId } = req.query;
+        const offset = (page - 1) * limit;
+        const whereClause = {};
+
+        if (patientId) {
+            whereClause.patientId = patientId;
+        }
+
+        const records = await PainComfortAssessment.findAndCountAll({
+            where: whereClause,
+            limit: parseInt(limit),
+            offset: parseInt(offset),
             order: [["timestamp", "DESC"]],
         });
 
         return res.status(200).json({
-            message: "Pain & Comfort Assessments fetched successfully",
-            data,
+            total: records.count,
+            page: parseInt(page),
+            pageSize: parseInt(limit),
+            data: records.rows,
         });
     } catch (error) {
         console.error("Get All Pain Assessments Error:", error);

@@ -3,7 +3,6 @@ const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
-const path = require("path");
 
 const carePlanRoutes = require("./carePlan.routes");
 const dailyNoteRoutes = require("./dailyNote.routes");
@@ -18,6 +17,7 @@ const skinCirculationRoutes = require("./skinCirculation.routes");
 const hygieneCareRoutes = require("./generalHygieneCareRoutes");
 const bowelChartRoutes = require("./bowelChartRoutes");
 const urineRoutes = require("./urineMonitoringRoutes");
+const uploadRoutes = require("./images.routes");
 
 const app = express();
 
@@ -34,18 +34,17 @@ app.use(
 
 app.use(cors({
   origin: [
-    "http://localhost:3001",
+    "http://localhost:3000",
     "https://crmnursing.smsitsolutions.com.au",
   ],
   credentials: true,
 }));
 
-app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
-
 
 app.use(express.json());
 
-app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+
+app.use("/api/uploads", uploadRoutes);
 
 app.use("/api/authentication", userAuthentication);
 

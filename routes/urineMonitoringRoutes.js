@@ -1,7 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const urineController = require("../controllers/urineMonitoringController");
+const auth = require('../middlewares/auth.middleware');
+const { rateLimiter } = require('../middlewares/rateLimiter');
 
+router.use(rateLimiter);
+router.use(auth);
 // Create
 router.post("/", urineController.createUrineMonitoring);
 

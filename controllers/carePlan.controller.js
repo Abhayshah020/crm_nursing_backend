@@ -12,7 +12,8 @@ exports.createCarePlan = async (req, res) => {
   const t = await sequelize.transaction();
   try {
     const {
-      clientName,
+      patientId,
+      patientName,
       dateOfBirth,
       medicalDoctorName,
       medicalDoctorContactNumber,
@@ -25,7 +26,8 @@ exports.createCarePlan = async (req, res) => {
 
     // Create main care plan
     const carePlan = await CarePlan.create({
-      clientName,
+      patientId,
+      patientName,
       dateOfBirth,
       medicalDoctorName,
       medicalDoctorContactNumber,
@@ -75,18 +77,38 @@ exports.createCarePlan = async (req, res) => {
  */
 exports.getAllCarePlans = async (req, res) => {
   try {
-    const carePlans = await CarePlan.findAll({
+    const { page = 1, limit = 20, patientId } = req.query;
+    const offset = (page - 1) * limit;
+    const whereClause = {};
+
+    // ✅ Apply filter only if patientId is provided
+    if (patientId) {
+      whereClause.patientId = patientId;
+    }
+
+    const records = await CarePlan.findAndCountAll({
+      where: whereClause,
+      limit: parseInt(limit),
+      offset: parseInt(offset),
       include: [
         { model: CarePlanChronicDisease, as: "chronicDiseases" },
         { model: CarePlanPartnershipRole, as: "partnershipRoles" }
       ],
-      order: [['createdAt', 'DESC']]
+      order: [["createdAt", "DESC"]]
     });
-    res.json(carePlans);
+
+    return res.status(200).json({
+      total: records.count,
+      page: parseInt(page),
+      pageSize: parseInt(limit),
+      data: records.rows,
+    });
   } catch (err) {
+    console.error("Get Care Plans Error:", err);
     res.status(500).json({ error: err.message });
   }
 };
+
 
 /**
  * GET Care Plan by ID
@@ -118,7 +140,8 @@ exports.updateCarePlan = async (req, res) => {
   try {
     const { id } = req.params;
     const {
-      clientName,
+      patientId,
+      patientName,
       dateOfBirth,
       medicalDoctorName,
       medicalDoctorContactNumber,
@@ -134,7 +157,8 @@ exports.updateCarePlan = async (req, res) => {
 
     // Update main care plan
     await carePlan.update({
-      clientName,
+      patientId,
+      patientName,
       dateOfBirth,
       medicalDoctorName,
       medicalDoctorContactNumber,

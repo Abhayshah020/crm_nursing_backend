@@ -14,16 +14,29 @@ exports.createBowelChart = async (req, res) => {
 // Get all bowel chart records (with optional pagination)
 exports.getAllBowelCharts = async (req, res) => {
     try {
-        const { page = 1, limit = 20 } = req.query;
+        const { page = 1, limit = 20, patientId } = req.query;
         const offset = (page - 1) * limit;
 
-        const records = await BowelChart.findAll({
-            limit: parseInt(limit),
-            offset: parseInt(offset),
+        const whereClause = {};
+
+        if (patientId) {
+            whereClause.patientId = patientId;
+        }
+
+        const records = await BowelChart.findAndCountAll({
+            where: whereClause,
+            limit: parseInt(limit, 10),
+            offset: parseInt(offset, 10),
             order: [["timestamp", "DESC"]],
         });
 
-        res.status(200).json(records);
+        return res.status(200).json({
+            total: records.count,
+            page: parseInt(page),
+            pageSize: parseInt(limit),
+            data: records.rows,
+        });
+
     } catch (error) {
         console.error("Error fetching bowel charts:", error);
         res.status(500).json({ message: "Internal server error" });

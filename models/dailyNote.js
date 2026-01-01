@@ -2,16 +2,23 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
 const DailyNote = sequelize.define("DailyNote", {
-    clientName: {
+    patientId: {
+        type: DataTypes.INTEGER,
+    },
+    patientName: {
         type: DataTypes.STRING,
     },
-    timeStamps: {
-        type: DataTypes.STRING,
+
+    timestamp: {
+        type: DataTypes.DATE,
     },
     notes: {
         type: DataTypes.TEXT,
     },
     date: {
+        type: DataTypes.STRING,
+    },
+    time: {
         type: DataTypes.STRING,
     },
     status: {

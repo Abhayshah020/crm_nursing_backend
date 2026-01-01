@@ -17,10 +17,26 @@ exports.createUrineMonitoring = async (req, res) => {
 // Get all urine monitoring records (with optional patient filter)
 exports.getAllUrineMonitoring = async (req, res) => {
     try {
-        const { patientId } = req.query;
-        const query = patientId ? { where: { patientId } } : {};
-        const records = await UrineMonitoring.findAll(query);
-        return res.status(200).json(records);
+        const { page = 1, limit = 10, patientId } = req.query;
+        const offset = (page - 1) * limit;
+        const whereClause = {};
+        if (patientId) {
+            whereClause.patientId = patientId;
+        }
+
+        const records = await UrineMonitoring.findAndCountAll({
+            where: whereClause,
+            limit: parseInt(limit),
+            offset: parseInt(offset),
+            order: [["timestamp", "DESC"]],
+        });
+
+        return res.status(200).json({
+            total: records.count,
+            page: parseInt(page),
+            pageSize: parseInt(limit),
+            data: records.rows,
+        });
     } catch (error) {
         console.error("Error fetching Urine Monitoring records:", error);
         return res.status(500).json({ message: "Server error", error });

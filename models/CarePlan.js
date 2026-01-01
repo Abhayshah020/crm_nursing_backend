@@ -10,31 +10,42 @@ const CarePlan = sequelize.define(
       primaryKey: true
     },
 
-    clientName: {
-      type: DataTypes.STRING,
+    patientId: {
+        type: DataTypes.INTEGER,
+    },
+    patientName: {
+        type: DataTypes.STRING,
     },
 
+
     dateOfBirth: {
-      type: DataTypes.DATEONLY,
+      type: DataTypes.STRING,
+      allowNull: true
     },
 
     medicalDoctorName: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: true
     },
 
     medicalDoctorContactNumber: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: true
     },
 
     createdBy: {
       type: DataTypes.INTEGER,
+      allowNull: true
     },
 
     status: {
       type: DataTypes.ENUM("draft", "completed", "locked"),
       defaultValue: "draft"
     },
-
+    timestamp: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+    },
     formData: {
       type: DataTypes.JSONB,
       defaultValue: {}
@@ -44,7 +55,6 @@ const CarePlan = sequelize.define(
     tableName: "care_plans",
     timestamps: true,
     indexes: [
-      { fields: ["clientName"] },
       { fields: ["dateOfBirth"] },
       { fields: ["status"] }
     ]

@@ -2,7 +2,11 @@ const express = require("express");
 const router = express.Router();
 const uploadPatientImage = require("../middlewares/uploadPatientImage");
 const patientController = require("../controllers/patient.controller");
+const auth = require('../middlewares/auth.middleware');
+const { rateLimiter } = require('../middlewares/rateLimiter');
 
+router.use(rateLimiter);
+router.use(auth);
 router.post(
     "",
     uploadPatientImage.single("patientImage"),
@@ -10,6 +14,7 @@ router.post(
 );
 
 router.get("", patientController.getPatients);
+router.get("/all-with-profile", patientController.getAllPatientsWithProfileStatus);
 router.get("/:id", patientController.getPatientById);
 
 router.put(
@@ -19,5 +24,6 @@ router.put(
 );
 
 router.delete("/:id", patientController.deletePatient);
+
 
 module.exports = router;

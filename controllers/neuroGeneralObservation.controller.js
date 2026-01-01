@@ -17,23 +17,27 @@ exports.createObservation = async (req, res) => {
 // GET all observations with optional pagination
 exports.getObservations = async (req, res) => {
     try {
-        const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
-        const offset = (page - 1) * limit;
+        const { page = 1, limit = 10, patientId } = req.query;
 
-        const { count, rows } = await NeuroGeneralObservation.findAndCountAll({
+        const offset = (page - 1) * limit;
+        const whereClause = {};
+
+        if (patientId) {
+            whereClause.patientId = patientId;
+        }
+
+        const records = await NeuroGeneralObservation.findAndCountAll({
+            where: whereClause,
+            limit: parseInt(limit),
+            offset: parseInt(offset),
             order: [["timestamp", "DESC"]],
-            limit,
-            offset,
         });
 
         return res.status(200).json({
-            data: rows,
-            pagination: {
-                total: count,
-                page,
-                pages: Math.ceil(count / limit),
-            },
+            total: records.count,
+            page: parseInt(page),
+            pageSize: parseInt(limit),
+            data: records.rows,
         });
     } catch (error) {
         console.error("Get Observations Error:", error);

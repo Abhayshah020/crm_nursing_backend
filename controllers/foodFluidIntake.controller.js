@@ -17,20 +17,26 @@ exports.createIntake = async (req, res) => {
 // GET all records with optional pagination
 exports.getAllIntakes = async (req, res) => {
     try {
-        const { page = 1, limit = 10 } = req.query;
+        const { page = 1, limit = 10, patientId } = req.query;
         const offset = (page - 1) * limit;
+        const whereClause = {};
 
-        const intakes = await FoodFluidIntake.findAndCountAll({
+        if (patientId) {
+            whereClause.patientId = patientId;
+        }
+        
+        const records = await FoodFluidIntake.findAndCountAll({
+            where: whereClause,
             limit: parseInt(limit),
             offset: parseInt(offset),
             order: [["timestamp", "DESC"]],
         });
 
         return res.status(200).json({
-            total: intakes.count,
+            total: records.count,
             page: parseInt(page),
             pageSize: parseInt(limit),
-            data: intakes.rows,
+            data: records.rows,
         });
     } catch (error) {
         console.error("Get All Intakes Error:", error);

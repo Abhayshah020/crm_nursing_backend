@@ -3,10 +3,27 @@ const { GeneralHygieneCare } = require("../models");
 // Get all hygiene care records
 exports.getAllHygieneCare = async (req, res) => {
     try {
-        const records = await GeneralHygieneCare.findAll({
+        const { page = 1, limit = 10, patientId } = req.query;
+        const offset = (page - 1) * limit;
+        const whereClause = {};
+
+        if (patientId) {
+            whereClause.patientId = patientId;
+        }
+
+        const records = await GeneralHygieneCare.findAndCountAll({
+            where: whereClause,
+            limit: parseInt(limit),
+            offset: parseInt(offset),
             order: [["timestamp", "DESC"]],
         });
-        res.status(200).json(records);
+
+        return res.status(200).json({
+            total: records.count,
+            page: parseInt(page),
+            pageSize: parseInt(limit),
+            data: records.rows,
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to fetch records" });
