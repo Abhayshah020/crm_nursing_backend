@@ -81,6 +81,9 @@ exports.updateSkinCirculation = async (req, res) => {
 // DELETE record by ID
 exports.deleteSkinCirculation = async (req, res) => {
     try {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Admin access only' });
+        }
         const { id } = req.params;
         const record = await SkinCirculation.findByPk(id);
 

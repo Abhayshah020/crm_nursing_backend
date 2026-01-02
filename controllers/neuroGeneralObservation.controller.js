@@ -86,6 +86,9 @@ exports.updateObservation = async (req, res) => {
 // DELETE an observation
 exports.deleteObservation = async (req, res) => {
     try {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Admin access only' });
+        }
         const { id } = req.params;
         const observation = await NeuroGeneralObservation.findByPk(id);
 

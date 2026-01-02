@@ -35,7 +35,7 @@ exports.getAllDailyNotes = async (req, res) => {
             offset: parseInt(offset),
             order: [["timestamp", "DESC"]],
         });
-        
+
         return res.status(200).json({
             total: records.count,
             page: parseInt(page),
@@ -83,6 +83,9 @@ exports.updateDailyNote = async (req, res) => {
  */
 exports.deleteDailyNote = async (req, res) => {
     try {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Admin access only' });
+        }
         const { id } = req.params;
         const note = await DailyNote.findByPk(id);
         if (!note) return res.status(404).json({ error: "Daily Note not found" });

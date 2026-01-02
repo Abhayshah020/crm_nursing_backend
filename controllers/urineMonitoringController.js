@@ -1,18 +1,43 @@
 const { UrineMonitoring } = require("../models");
 
+function splitModelAndFormData(model, payload) {
+    const modelFields = Object.keys(model.rawAttributes);
+
+    const modelData = {};
+    const formData = {};
+
+    for (const key in payload) {
+        if (modelFields.includes(key)) {
+            modelData[key] = payload[key];
+        } else {
+            formData[key] = payload[key];
+        }
+    }
+
+    return { modelData, formData };
+}
+
+
 // Create new urine monitoring record
 exports.createUrineMonitoring = async (req, res) => {
     try {
+        const { modelData, formData } = splitModelAndFormData(
+            UrineMonitoring,
+            req.body
+        );
+
         const data = await UrineMonitoring.create({
-            ...req.body,
-            formData: req.body,
+            ...modelData,
+            formData,
         });
+
         return res.status(201).json(data);
     } catch (error) {
         console.error("Error creating Urine Monitoring record:", error);
         return res.status(500).json({ message: "Server error", error });
     }
 };
+
 
 // Get all urine monitoring records (with optional patient filter)
 exports.getAllUrineMonitoring = async (req, res) => {
@@ -60,10 +85,25 @@ exports.getUrineMonitoringById = async (req, res) => {
 exports.updateUrineMonitoring = async (req, res) => {
     try {
         const { id } = req.params;
-        const record = await UrineMonitoring.findByPk(id);
-        if (!record) return res.status(404).json({ message: "Record not found" });
 
-        await record.update({ ...req.body, formData: req.body });
+        const record = await UrineMonitoring.findByPk(id);
+        if (!record) {
+            return res.status(404).json({ message: "Record not found" });
+        }
+
+        const { modelData, formData } = splitModelAndFormData(
+            UrineMonitoring,
+            req.body
+        );
+
+        await record.update({
+            ...modelData,
+            formData: {
+                ...(record.formData || {}),
+                ...formData, // merge new extra fields
+            },
+        });
+
         return res.status(200).json(record);
     } catch (error) {
         console.error("Error updating Urine Monitoring record:", error);
@@ -71,9 +111,14 @@ exports.updateUrineMonitoring = async (req, res) => {
     }
 };
 
+
 // Delete a record by ID
 exports.deleteUrineMonitoring = async (req, res) => {
     try {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Admin access only' });
+        }
+
         const { id } = req.params;
         const record = await UrineMonitoring.findByPk(id);
         if (!record) return res.status(404).json({ message: "Record not found" });

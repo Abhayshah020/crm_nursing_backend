@@ -28,7 +28,11 @@ const CarePlanPartnershipRole = sequelize.define(
 
         responsibilities: {
             type: DataTypes.TEXT
-        }
+        },
+        formData: {
+            type: DataTypes.JSONB,
+            defaultValue: {},
+        },
     },
     {
         tableName: "care_plan_partnership_roles",

@@ -75,6 +75,9 @@ exports.updateBowelChart = async (req, res) => {
 // Delete a bowel chart by ID
 exports.deleteBowelChart = async (req, res) => {
     try {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Admin access only' });
+        }
         const { id } = req.params;
         const record = await BowelChart.findByPk(id);
         if (!record) return res.status(404).json({ message: "Record not found" });

@@ -19,7 +19,7 @@ const UrineMonitoring = sequelize.define(
         },
 
         // Bladder Monitoring Period
-        reasonForCharting : {
+        reasonForCharting: {
             type: DataTypes.JSONB,
             allowNull: true,
             defaultValue: {},
@@ -31,7 +31,7 @@ const UrineMonitoring = sequelize.define(
             type: DataTypes.ENUM("Pale Yellow", "Dark Yellow", "Amber", "Brown", "Red/Pink"),
         },
         clarity: {
-            type: DataTypes.ENUM("Clear","Cloudy", "Sediment Present"),
+            type: DataTypes.ENUM("Clear", "Cloudy", "Sediment Present"),
             allowNull: true,
         },
         odour: {
@@ -82,11 +82,11 @@ const UrineMonitoring = sequelize.define(
             type: DataTypes.ENUM("None", "IDC", "SPC"),
             allowNull: true,
         },
-        siteCleanAndIntact : {
+        siteCleanAndIntact: {
             type: DataTypes.BOOLEAN,
             allowNull: true,
         },
-        bagBelowBladder : {
+        bagBelowBladder: {
             type: DataTypes.BOOLEAN,
             allowNull: true,
         },
@@ -122,8 +122,12 @@ const UrineMonitoring = sequelize.define(
             allowNull: true,
         },
 
-        staffName: {
+        createdBy: {
             type: DataTypes.STRING,
+        },
+
+        createdById: {
+            type: DataTypes.INTEGER,
         },
 
         timestamp: {

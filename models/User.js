@@ -23,7 +23,7 @@ const User = sequelize.define('User', {
     },
 
     role: {
-        type: DataTypes.ENUM('admin', 'employee'),
+        type: DataTypes.ENUM('admin', 'employee', 'superadmin'),
         defaultValue: 'employee'
     },
 
@@ -34,14 +34,16 @@ const User = sequelize.define('User', {
 
     permissions: {
         type: DataTypes.JSONB,
-        defaultValue: {
-            view: true,
-            create: false,
-            edit: false,
-            delete: false
-        }
+        defaultValue: {}
     },
 
+    createdBy: {
+        type: DataTypes.STRING,
+    },
+
+    createdById: {
+        type: DataTypes.INTEGER,
+    },
     userDetails: {
         type: DataTypes.JSONB,
         defaultValue: {}

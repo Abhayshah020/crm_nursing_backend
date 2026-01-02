@@ -86,6 +86,9 @@ exports.updateVitalSign = async (req, res) => {
 // DELETE a Core Vital Sign by id
 exports.deleteVitalSign = async (req, res) => {
     try {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Admin access only' });
+        }
         const { id } = req.params;
         const record = await CoreVitalSigns.findByPk(id);
         if (!record) {

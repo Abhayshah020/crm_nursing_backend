@@ -43,6 +43,14 @@ const Patient = sequelize.define(
             type: DataTypes.JSONB,
             defaultValue: {},
         },
+
+        createdBy: {
+            type: DataTypes.STRING,
+        },
+
+        createdById: {
+            type: DataTypes.INTEGER,
+        },
     },
     {
         tableName: "patients",

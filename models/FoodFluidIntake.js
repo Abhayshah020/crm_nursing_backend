@@ -43,8 +43,12 @@ const FoodFluidIntake = sequelize.define(
       allowNull: true
     },
 
-    staffName: {
+    createdBy: {
       type: DataTypes.STRING,
+    },
+
+    createdById: {
+      type: DataTypes.INTEGER,
     },
 
     timestamp: {

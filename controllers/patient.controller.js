@@ -1,13 +1,34 @@
-const { Patient } = require("../models");
-
 const fs = require("fs");
 const path = require("path");
 const { signImage } = require("../utils/signImage");
 
+const {
+    Patient,
+    CarePlan,
+    DailyNote,
+    CoreVitalSigns,
+    PainComfortAssessment,
+    FoodFluidIntake,
+    NeuroGeneralObservation,
+    SkinCirculation,
+    GeneralHygieneCare,
+    BowelChart,
+    UrineMonitoring,
+} = require("../models");
+
 // Create patient
 exports.createPatient = async (req, res) => {
     try {
-        const { name, contact, email, age, address, details } = req.body;
+        const {
+            name,
+            contact,
+            email,
+            age,
+            address,
+            details,
+            createdBy,
+            createdById,
+        } = req.body;
 
         if (!name) {
             return res.status(400).json({ message: "Name is required" });
@@ -25,6 +46,8 @@ exports.createPatient = async (req, res) => {
             address,
             details,
             image: imagePath,
+            createdBy,
+            createdById,
         });
 
         res.status(201).json({ message: "Patient created", patient });
@@ -108,7 +131,16 @@ exports.getPatientById = async (req, res) => {
 exports.updatePatient = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, contact, email, age, address, details } = req.body;
+        const {
+            name,
+            contact,
+            email,
+            age,
+            address,
+            details,
+            createdBy,
+            createdById,
+        } = req.body;
 
         const patient = await Patient.findByPk(id);
         if (!patient) {
@@ -138,6 +170,8 @@ exports.updatePatient = async (req, res) => {
             age,
             address,
             details,
+            createdBy,
+            createdById,
             image: imagePath,
         });
 
@@ -151,12 +185,16 @@ exports.updatePatient = async (req, res) => {
 // Delete patient
 exports.deletePatient = async (req, res) => {
     try {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Admin access only' });
+        }
+
         const patient = await Patient.findByPk(req.params.id);
         if (!patient) {
             return res.status(404).json({ message: "Patient not found" });
         }
 
-        // Delete image from storage
+        // Delete patient image
         if (patient.image) {
             const imgPath = path.join(__dirname, "..", patient.image);
             if (fs.existsSync(imgPath)) {
@@ -164,11 +202,27 @@ exports.deletePatient = async (req, res) => {
             }
         }
 
+        // Delete all related records
+        await Promise.all([
+            CarePlan.destroy({ where: { patientId: patient.id } }),
+            DailyNote.destroy({ where: { patientId: patient.id } }),
+            CoreVitalSigns.destroy({ where: { patientId: patient.id } }),
+            PainComfortAssessment.destroy({ where: { patientId: patient.id } }),
+            FoodFluidIntake.destroy({ where: { patientId: patient.id } }),
+            NeuroGeneralObservation.destroy({ where: { patientId: patient.id } }),
+            SkinCirculation.destroy({ where: { patientId: patient.id } }),
+            GeneralHygieneCare.destroy({ where: { patientId: patient.id } }),
+            BowelChart.destroy({ where: { patientId: patient.id } }),
+            UrineMonitoring.destroy({ where: { patientId: patient.id } }),
+        ]);
+
+        // Finally delete the patient
         await patient.destroy();
-        res.json({ message: "Patient deleted" });
+
+        return res.json({ message: "Patient and all related data deleted successfully" });
     } catch (error) {
         console.error("Delete Patient Error:", error);
-        res.status(500).json({ message: "Failed to delete patient" });
+        return res.status(500).json({ message: "Failed to delete patient", error });
     }
 };
 

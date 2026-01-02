@@ -18,10 +18,11 @@ exports.createCarePlan = async (req, res) => {
       medicalDoctorName,
       medicalDoctorContactNumber,
       status = "draft",
-      createdBy,
       formData = {},
       chronicDiseases = [],
-      partnershipRoles = []
+      partnershipRoles = [],
+      createdBy,
+      createdById
     } = req.body;
 
     // Create main care plan
@@ -33,6 +34,7 @@ exports.createCarePlan = async (req, res) => {
       medicalDoctorContactNumber,
       status,
       createdBy,
+      createdById,
       formData
     }, { transaction: t });
 
@@ -148,6 +150,7 @@ exports.updateCarePlan = async (req, res) => {
       status,
       formData,
       createdBy,
+      createdById,
       chronicDiseases = [],
       partnershipRoles = []
     } = req.body;
@@ -164,6 +167,7 @@ exports.updateCarePlan = async (req, res) => {
       medicalDoctorContactNumber,
       status,
       createdBy,
+      createdById,
       formData
     }, { transaction: t });
 
@@ -205,6 +209,9 @@ exports.updateCarePlan = async (req, res) => {
 exports.deleteCarePlan = async (req, res) => {
   const t = await sequelize.transaction();
   try {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Admin access only' });
+    }
     const { id } = req.params;
     const carePlan = await CarePlan.findByPk(id, { transaction: t });
     if (!carePlan) return res.status(404).json({ error: "CarePlan not found" });

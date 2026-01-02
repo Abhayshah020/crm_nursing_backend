@@ -16,7 +16,7 @@ const CoreVitalSigns = sequelize.define("CoreVitalSigns", {
     },
 
     temperature: {
-        type: DataTypes.FLOAT,
+        type: DataTypes.STRING,
         allowNull: true,
     },
 
@@ -26,7 +26,7 @@ const CoreVitalSigns = sequelize.define("CoreVitalSigns", {
     },
 
     pulseRate: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true,
     },
     pulseNote: {
@@ -35,11 +35,11 @@ const CoreVitalSigns = sequelize.define("CoreVitalSigns", {
     },
 
     bloodPressureSystolic: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true,
     },
     bloodPressureDiastolic: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true,
     },
 
@@ -49,7 +49,7 @@ const CoreVitalSigns = sequelize.define("CoreVitalSigns", {
     },
 
     respiratoryRate: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true,
     },
     respiratoryNote: {
@@ -58,7 +58,7 @@ const CoreVitalSigns = sequelize.define("CoreVitalSigns", {
     },
 
     oxygenSaturation: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true,
     },
     oxygenNote: {
@@ -76,13 +76,17 @@ const CoreVitalSigns = sequelize.define("CoreVitalSigns", {
         defaultValue: DataTypes.NOW,
     },
 
-    staffId: {
-        type: DataTypes.INTEGER,
-    },
-    staffName: {
+    createdBy: {
         type: DataTypes.STRING,
     },
 
+    createdById: {
+        type: DataTypes.INTEGER,
+    },
+    formData: {
+        type: DataTypes.JSONB,
+        defaultValue: {},
+    },
 }, {
     tableName: "core_vital_signs",
     timestamps: false,

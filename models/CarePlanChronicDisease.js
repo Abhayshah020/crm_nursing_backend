@@ -28,7 +28,11 @@ const CarePlanChronicDisease = sequelize.define(
 
         treatmentPlan: {
             type: DataTypes.TEXT
-        }
+        },
+        formData: {
+            type: DataTypes.JSONB,
+            defaultValue: {},
+        },
     },
     {
         tableName: "care_plan_chronic_diseases",

@@ -24,7 +24,17 @@ const DailyNote = sequelize.define("DailyNote", {
     status: {
         type: DataTypes.ENUM("draft", "completed"),
         defaultValue: "draft"
-    }
+    },
+    createdBy: {
+        type: DataTypes.STRING,
+    },
+    formData: {
+        type: DataTypes.JSONB,
+        defaultValue: {},
+    },
+    createdById: {
+        type: DataTypes.INTEGER,
+    },
 }, {
     tableName: "daily_notes",
     timestamps: true

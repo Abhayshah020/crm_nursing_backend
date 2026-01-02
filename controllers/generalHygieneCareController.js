@@ -73,6 +73,9 @@ exports.updateHygieneCare = async (req, res) => {
 exports.deleteHygieneCare = async (req, res) => {
     const { id } = req.params;
     try {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Admin access only' });
+        }
         const record = await GeneralHygieneCare.findByPk(id);
         if (!record) return res.status(404).json({ error: "Record not found" });
 

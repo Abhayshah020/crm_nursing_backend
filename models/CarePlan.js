@@ -11,10 +11,10 @@ const CarePlan = sequelize.define(
     },
 
     patientId: {
-        type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER,
     },
     patientName: {
-        type: DataTypes.STRING,
+      type: DataTypes.STRING,
     },
 
 
@@ -34,8 +34,11 @@ const CarePlan = sequelize.define(
     },
 
     createdBy: {
+      type: DataTypes.STRING,
+    },
+
+    createdById: {
       type: DataTypes.INTEGER,
-      allowNull: true
     },
 
     status: {
@@ -43,8 +46,8 @@ const CarePlan = sequelize.define(
       defaultValue: "draft"
     },
     timestamp: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
     },
     formData: {
       type: DataTypes.JSONB,

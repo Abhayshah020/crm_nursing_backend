@@ -23,7 +23,7 @@ const BowelChart = sequelize.define(
         bowelMotion: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
-        },  
+        },
 
         bristolAmount: {
             type: DataTypes.ENUM("Small", "Medium", "Large"),
@@ -65,8 +65,12 @@ const BowelChart = sequelize.define(
             allowNull: true,
         },
 
-        staffName: {
+        createdBy: {
             type: DataTypes.STRING,
+        },
+
+        createdById: {
+            type: DataTypes.INTEGER,
         },
 
         timestamp: {

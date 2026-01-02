@@ -5,14 +5,15 @@ const User = require('./models/User');
 (async () => {
     try {
         await sequelize.authenticate();
-        console.log('Database connected');
 
         const admin = await User.create({
-            name: 'Admin User',           // Change this
-            email: 'admin@hdcs.com.au',   // Change this
-            password: 'Admin@12345',        // Will be hashed automatically
+            name: 'Admin User',
+            email: 'admin@hdcs.com.au',
+            password: 'Admin@12345',
             role: 'admin',
             status: 'active',
+            createdById: -1,
+            createdBy: "system",
             permissions: {}
         });
 

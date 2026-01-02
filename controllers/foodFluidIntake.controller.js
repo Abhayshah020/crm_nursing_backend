@@ -24,7 +24,7 @@ exports.getAllIntakes = async (req, res) => {
         if (patientId) {
             whereClause.patientId = patientId;
         }
-        
+
         const records = await FoodFluidIntake.findAndCountAll({
             where: whereClause,
             limit: parseInt(limit),
@@ -82,6 +82,9 @@ exports.updateIntake = async (req, res) => {
 // DELETE a record by ID
 exports.deleteIntake = async (req, res) => {
     try {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Admin access only' });
+        }
         const { id } = req.params;
         const intake = await FoodFluidIntake.findByPk(id);
 

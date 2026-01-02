@@ -58,13 +58,16 @@ const PainComfortAssessment = sequelize.define(
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW,
         },
-
-        staffId: {
-            type: DataTypes.INTEGER,
+        formData: {
+            type: DataTypes.JSONB,
+            defaultValue: {},
+        },
+        createdBy: {
+            type: DataTypes.STRING,
         },
 
-        staffName: {
-            type: DataTypes.STRING,
+        createdById: {
+            type: DataTypes.INTEGER,
         },
     },
     {

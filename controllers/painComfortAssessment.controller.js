@@ -114,6 +114,9 @@ exports.updatePainAssessment = async (req, res) => {
  */
 exports.deletePainAssessment = async (req, res) => {
     try {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Admin access only' });
+        }
         const { id } = req.params;
 
         const record = await PainComfortAssessment.findByPk(id);
