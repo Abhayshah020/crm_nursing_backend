@@ -74,7 +74,16 @@ exports.updateUser = async (req, res) => {
         }
 
         const { id } = req.params;
-        const { name, email, password, role, permissions, userDetails } = req.body;
+        const {
+            name,
+            email,
+            password,
+            role,
+            permissions,
+            userDetails,
+            createdBy,
+            createdById,
+        } = req.body;
 
         const user = await User.findByPk(id);
         if (!user) {
@@ -85,10 +94,12 @@ exports.updateUser = async (req, res) => {
         user.email = email ?? user.email;
         user.role = role ?? user.role;
         user.permissions = permissions ?? user.permissions;
+        user.createdBy = createdBy ?? user.createdBy;
+        user.createdById = createdById ?? user.createdById;
         user.userDetails = userDetails ?? user.userDetails;
 
         if (password) {
-            user.password = password; // re-hashed via hook
+            user.password = password;
         }
 
         await user.save();

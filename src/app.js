@@ -14,9 +14,9 @@ const PORT = process.env.PORT || 3000;
         await sequelize.authenticate();
         console.log("✅ PostgreSQL connected");
 
-        await sequelize.sync({ alter: true, force: true }); // use migrations in prod
+        // await sequelize.sync({ alter: true, force: true }); // use migrations in prod
         // await sequelize.sync(); // use migrations in prod
-        console.log("✅ Models synced");
+        // console.log("✅ Models synced");
 
         server.listen(PORT, () => {
             console.log(`🚀 Server running on port ${PORT}`);
