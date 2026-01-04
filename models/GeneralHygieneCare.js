@@ -60,7 +60,14 @@ const GeneralHygieneCare = sequelize.define(
         createdBy: {
             type: DataTypes.STRING,
         },
-
+        date: {
+            type: DataTypes.DATEONLY, // better than DATE if only date
+            allowNull: true,
+        },
+        time: {
+            type: DataTypes.TIME,
+            allowNull: true,
+        },
         createdById: {
             type: DataTypes.INTEGER,
         },

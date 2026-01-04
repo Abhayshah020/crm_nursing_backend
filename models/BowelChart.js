@@ -64,7 +64,14 @@ const BowelChart = sequelize.define(
             type: DataTypes.TEXT,
             allowNull: true,
         },
-
+        date: {
+            type: DataTypes.DATEONLY, // better than DATE if only date
+            allowNull: true,
+        },
+        time: {
+            type: DataTypes.TIME,
+            allowNull: true,
+        },
         createdBy: {
             type: DataTypes.STRING,
         },

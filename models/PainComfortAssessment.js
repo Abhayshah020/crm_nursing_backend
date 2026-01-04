@@ -62,6 +62,14 @@ const PainComfortAssessment = sequelize.define(
             type: DataTypes.JSONB,
             defaultValue: {},
         },
+        date: {
+            type: DataTypes.DATEONLY, // better than DATE if only date
+            allowNull: true,
+        },
+        time: {
+            type: DataTypes.TIME,
+            allowNull: true,
+        },
         createdBy: {
             type: DataTypes.STRING,
         },

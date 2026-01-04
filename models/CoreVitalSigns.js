@@ -83,6 +83,14 @@ const CoreVitalSigns = sequelize.define("CoreVitalSigns", {
     createdById: {
         type: DataTypes.INTEGER,
     },
+    date: {
+        type: DataTypes.DATEONLY, // better than DATE if only date
+        allowNull: true,
+    },
+    time: {
+        type: DataTypes.TIME,
+        allowNull: true,
+    },
     formData: {
         type: DataTypes.JSONB,
         defaultValue: {},

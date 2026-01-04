@@ -24,7 +24,14 @@ const UrineMonitoring = sequelize.define(
             allowNull: true,
             defaultValue: {},
         },
-
+        date: {
+            type: DataTypes.DATEONLY, // better than DATE if only date
+            allowNull: true,
+        },
+        time: {
+            type: DataTypes.TIME,
+            allowNull: true,
+        },
         // Urine Characteristics
         colour: {
             allowNull: true,

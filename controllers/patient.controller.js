@@ -28,6 +28,8 @@ exports.createPatient = async (req, res) => {
             details,
             createdBy,
             createdById,
+            date,
+            time,
         } = req.body;
 
         if (!name) {
@@ -48,6 +50,8 @@ exports.createPatient = async (req, res) => {
             image: imagePath,
             createdBy,
             createdById,
+            date,
+            time,
         });
 
         res.status(201).json({ message: "Patient created", patient });
@@ -90,7 +94,7 @@ exports.getPatients = async (req, res) => {
 
         return res.status(200).json({
             total: records.count,
-            page: parseInt(page),
+            page: Math.ceil(records.count / limit),
             pageSize: parseInt(limit),
             data,
         });
@@ -140,6 +144,8 @@ exports.updatePatient = async (req, res) => {
             details,
             createdBy,
             createdById,
+            date,
+            time,
         } = req.body;
 
         const patient = await Patient.findByPk(id);
@@ -173,6 +179,8 @@ exports.updatePatient = async (req, res) => {
             createdBy,
             createdById,
             image: imagePath,
+            date,
+            time,
         });
 
         res.json({ message: "Patient updated", patient });
@@ -255,7 +263,7 @@ exports.getAllPatientsWithProfileStatus = async (req, res) => {
 
         return res.status(200).json({
             total: records.count,
-            page: parseInt(page),
+            page: Math.ceil(records.count / limit),
             pageSize: parseInt(limit),
             data,
         });

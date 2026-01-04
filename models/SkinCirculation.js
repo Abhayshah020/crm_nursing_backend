@@ -55,7 +55,14 @@ const SkinCirculation = sequelize.define(
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW,
         },
-
+        date: {
+            type: DataTypes.DATEONLY, // better than DATE if only date
+            allowNull: true,
+        },
+        time: {
+            type: DataTypes.TIME,
+            allowNull: true,
+        },
         formData: {
             type: DataTypes.JSONB,
             defaultValue: {},

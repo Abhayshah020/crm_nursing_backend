@@ -30,7 +30,7 @@ exports.getAllVitalSigns = async (req, res) => {
         }
 
         const records = await CoreVitalSigns.findAndCountAll({
-            whereClause,
+            where: whereClause,
             limit: parseInt(limit, 10),
             offset: parseInt(offset, 10),
             order: [["timestamp", "DESC"]],
@@ -38,7 +38,7 @@ exports.getAllVitalSigns = async (req, res) => {
 
         return res.status(200).json({
             total: records.count,
-            page: parseInt(page),
+            page: Math.ceil(records.count / limit),
             pageSize: parseInt(limit),
             data: records.rows,
         });

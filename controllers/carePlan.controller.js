@@ -22,7 +22,10 @@ exports.createCarePlan = async (req, res) => {
       chronicDiseases = [],
       partnershipRoles = [],
       createdBy,
-      createdById
+      createdById,
+      date,
+      time,
+      timestamp,
     } = req.body;
 
     // Create main care plan
@@ -35,7 +38,10 @@ exports.createCarePlan = async (req, res) => {
       status,
       createdBy,
       createdById,
-      formData
+      formData,
+      date,
+      time,
+      timestamp,
     }, { transaction: t });
 
     // Create associated chronic diseases
@@ -101,7 +107,7 @@ exports.getAllCarePlans = async (req, res) => {
 
     return res.status(200).json({
       total: records.count,
-      page: parseInt(page),
+      page: Math.ceil(records.count / limit),
       pageSize: parseInt(limit),
       data: records.rows,
     });

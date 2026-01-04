@@ -35,7 +35,7 @@ exports.getObservations = async (req, res) => {
 
         return res.status(200).json({
             total: records.count,
-            page: parseInt(page),
+            page: Math.ceil(records.count / limit),
             pageSize: parseInt(limit),
             data: records.rows,
         });
