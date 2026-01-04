@@ -15,27 +15,39 @@ exports.createIntake = async (req, res) => {
 };
 
 // GET all records with optional pagination
+// GET all records with optional pagination + date filter
 exports.getAllIntakes = async (req, res) => {
     try {
-        const { page = 1, limit = 10, patientId } = req.query;
-        const offset = (page - 1) * limit;
+        const { page = 1, limit = 10, patientId, date } = req.query;
+
+        const parsedLimit = parseInt(limit);
+        const offset = (page - 1) * parsedLimit;
+
         const whereClause = {};
 
+        // ✅ Filter by patient
         if (patientId) {
             whereClause.patientId = patientId;
         }
 
+        // ✅ Filter by date (YYYY-MM-DD)
+        if (date) {
+            whereClause.date = date;
+            // DATEONLY → exact match, no Op.between needed
+        }
+
         const records = await FoodFluidIntake.findAndCountAll({
             where: whereClause,
-            limit: parseInt(limit),
-            offset: parseInt(offset),
+            limit: parsedLimit,
+            offset,
             order: [["timestamp", "DESC"]],
         });
 
         return res.status(200).json({
-            total: records.count,
-            page: Math.ceil(records.count / limit),
-            pageSize: parseInt(limit),
+            totalRecords: records.count,
+            currentPage: Number(page),
+            totalPages: Math.ceil(records.count / parsedLimit),
+            pageSize: parsedLimit,
             data: records.rows,
         });
     } catch (error) {
