@@ -46,7 +46,7 @@ exports.getAllIntakes = async (req, res) => {
         return res.status(200).json({
             totalRecords: records.count,
             currentPage: Number(page),
-            totalPages: Math.ceil(records.count / parsedLimit),
+            page: Math.ceil(records.count / limit),
             pageSize: parsedLimit,
             data: records.rows,
         });
